@@ -8,6 +8,7 @@
 
 import streamlit as st
 from langchain_community.document_loaders import PDFPlumberLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain_experimental.text_splitter import SemanticChunker
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -66,7 +67,8 @@ if uploaded_file is not None:
         f.write(uploaded_file.getvalue())
 
     # PDF 로더 초기화
-    loader = PDFPlumberLoader("temp.pdf")
+    #loader = PDFPlumberLoader("temp.pdf")
+    loader = PyPDFLoader("temp.pdf")
     docs = loader.load()
 
     # 문서 분할기 초기화
@@ -109,10 +111,10 @@ if uploaded_file is not None:
         ]
     )
 
-    # 문서 결합 체인 생성
+    # 문서 결합 체인 생성 ( Model 과 Prompt 연결)
     combine_docs_chain = create_stuff_documents_chain(llm, prompt)
 
-    # 검색 기반 QA 체인 생성
+    # 검색 기반 QA 체인 생성 ( prompt + model + retriever )
     rag_chain = create_retrieval_chain(retriever, combine_docs_chain)
 
     # 사용자 입력 받기
