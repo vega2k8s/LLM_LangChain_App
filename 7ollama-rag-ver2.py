@@ -1,3 +1,5 @@
+# streamlit run 7ollama-rag-ver2.py
+
 import streamlit as st
 from langchain_community.document_loaders import PDFPlumberLoader
 from langchain_community.document_loaders import PyPDFLoader
