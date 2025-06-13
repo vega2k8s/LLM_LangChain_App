@@ -1,5 +1,6 @@
 import streamlit as st
 from langchain_community.document_loaders import PDFPlumberLoader
+from langchain_community.document_loaders import PyPDFLoader
 from langchain_experimental.text_splitter import SemanticChunker
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
@@ -85,7 +86,7 @@ SYSTEM_PROMPT = (
 # =====================
 #  Streamlit UI
 # =====================
-st.title("DeepSeek R1 & Ollama 기반 RAG 시스템")
+st.title("Ollama 기반 RAG 시스템")
 
 # 파일 업로드
 uploaded_file = st.file_uploader("📄 PDF 파일을 업로드하세요", type="pdf")
@@ -96,7 +97,8 @@ if uploaded_file and "rag_chain" not in st.session_state:
             # PDF 로드
             with open(TEMP_PDF_PATH, "wb") as f:
                 f.write(uploaded_file.getvalue())
-            loader = PDFPlumberLoader(TEMP_PDF_PATH)
+                
+            loader = PyPDFLoader(TEMP_PDF_PATH)
             docs = loader.load()
 
             # 문서 분할
